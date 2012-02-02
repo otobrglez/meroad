@@ -11,12 +11,25 @@
 		return $param;
 	};
 
+	function file_get_contents_curl($url) {
+		$ch = curl_init();
+		
+		curl_setopt($ch, CURLOPT_HEADER, 0);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_URL, $url);
+		
+		$data = curl_exec($ch);
+		curl_close($ch);
+		
+		return $data;
+	}
+
 	$a = @check_param($_GET["a"],"Location A is missing!");
 	$b = @check_param($_GET["b"],"Location B is missing");
 
 	$url = sprintf("http://maps.google.com/maps?saddr=%s&daddr=%s&hl=en",$a,$b);
 
-	$data = file_get_contents($url);
+	$data = file_get_contents_curl($url);
 	if(!$data){
 		echo json_encode(array("error"=>"Error fetching data!"));
 		exit;

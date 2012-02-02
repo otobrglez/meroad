@@ -17,7 +17,10 @@
 	$url = sprintf("http://maps.google.com/maps?saddr=%s&daddr=%s&hl=en",$a,$b);
 
 	$data = file_get_contents($url);
-	if(!$data) echo json_encode(array("error"=>"Error fetching data!"));
+	if(!$data){
+		echo json_encode(array("error"=>"Error fetching data!"));
+		exit;
+	};
 
 	preg_match_all ('/<ol[^>]*id="dir_altroutes_body">(.*?)<\\/ol>/i', $data, $out);
 
